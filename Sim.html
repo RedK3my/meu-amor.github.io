@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nossas memórias</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,400&family=DM+Sans:wght@400;500;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --fundo: #fbdce6;
+    --bolinha: #c79a9c;
+    --rosa: #f0508a;
+    --framboesa: #8c2352;
+    --creme: #fff7fa;
+    --texto: #5e1f43;
+    --suave: #a0587d;
+    --fita: rgba(255, 179, 207, .75);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  button, a, input {
+    outline: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+  body {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    color: var(--texto);
+    overflow-x: hidden;
+    background:
+      radial-gradient(ellipse 90% 45% at 50% 108%, #fff0f6 0%, rgba(255,240,246,0) 70%),
+      linear-gradient(180deg, #ff9fc3 0%, #ffbcd5 50%, #ffdbe8 100%);
+    background-attachment: fixed;
+  }
+  .estrelas {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background-image:
+      radial-gradient(1.5px 1.5px at 12% 18%, #fff 50%, transparent 51%),
+      radial-gradient(1px 1px at 28% 8%, #fff 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 47% 22%, #fff 50%, transparent 51%),
+      radial-gradient(1px 1px at 63% 12%, #fff 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 81% 20%, #fff 50%, transparent 51%),
+      radial-gradient(1px 1px at 92% 7%, #fff 50%, transparent 51%),
+      radial-gradient(1px 1px at 6% 38%, #fff 50%, transparent 51%),
+      radial-gradient(1px 1px at 74% 36%, #fff 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 18% 62%, #fff 50%, transparent 51%),
+      radial-gradient(1px 1px at 88% 58%, #fff 50%, transparent 51%),
+      radial-gradient(1px 1px at 38% 80%, #fff 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 70% 90%, #fff 50%, transparent 51%);
+    opacity: .9;
+    animation: brilhar 5s ease-in-out infinite alternate;
+  }
+  @keyframes brilhar { from { opacity: .35; } to { opacity: .85; } }
+  @media (prefers-reduced-motion: reduce) { .estrelas { animation: none; } }
+  main { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 44px 26px 80px; }
+
+  header { text-align: center; }
+  h1 {
+    font-family: 'Fraunces', Georgia, serif; font-weight: 500;
+    font-size: clamp(2.1rem, 8vw, 3rem); line-height: 1.1; color: var(--framboesa);
+  }
+  .sub { margin-top: 10px; font-family: 'Caveat', cursive; font-size: 1.5rem; color: var(--suave); }
+
+  h2 {
+    margin: 64px 0 6px; text-align: center;
+    font-family: 'Fraunces', Georgia, serif; font-weight: 500; font-size: 1.8rem; color: var(--framboesa);
+  }
+  .legenda-secao { text-align: center; font-family: 'Caveat', cursive; font-size: 1.3rem; color: var(--suave); }
+
+  /* polaroids */
+  .fotos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 34px 22px; margin-top: 34px; }
+  .polaroid {
+    position: relative; padding: 12px 12px 14px; background: #fff;
+    box-shadow: 0 14px 30px rgba(176, 40, 100, .25);
+    transform: rotate(var(--r, 0deg));
+    transition: transform .25s;
+  }
+  .polaroid:hover { transform: rotate(0deg) scale(1.04); z-index: 3; }
+  .polaroid::before {
+    content: ""; position: absolute; top: -12px; left: 50%; width: 76px; height: 24px;
+    transform: translateX(-50%) rotate(-4deg); background: var(--fita);
+  }
+  .foto {
+    position: relative; aspect-ratio: 1 / 1; overflow: hidden;
+    background: repeating-linear-gradient(45deg, #ffe3ee, #ffe3ee 10px, #ffd3e3 10px, #ffd3e3 20px);
+    display: grid; place-items: center;
+  }
+  .foto::after {
+    content: "sua foto aqui"; position: absolute; font-family: 'Caveat', cursive; font-size: 1.3rem; color: #c0708f;
+  }
+  .foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; object-position: center 35%; }
+  .polaroid p { margin-top: 12px; text-align: center; font-family: 'Caveat', cursive; font-weight: 700; font-size: 1.35rem; color: var(--framboesa); }
+  .polaroid.selo-postal { background: transparent; box-shadow: none; padding: 0; }
+  .polaroid.selo-postal .foto { border: 14px solid #fff; border-radius: 4px; box-shadow: 0 14px 30px rgba(176,40,100,.25); }
+  .polaroid.selo-postal p { margin-top: 10px; }
+
+  /* frases */
+  .lista { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 30px; }
+  .frase {
+    position: relative; padding: 18px 20px 18px 22px; background: var(--creme);
+    border-radius: 18px; border: 1.5px solid #ffd3e3;
+    box-shadow: 0 8px 20px rgba(176, 40, 100, .15);
+    transform: rotate(var(--r, 0deg));
+  }
+  .frase b {
+    display: block; margin-bottom: 4px;
+    font-family: 'Fraunces', Georgia, serif; font-weight: 500; font-size: 1.15rem; color: var(--rosa);
+  }
+  .frase span { font-size: 1rem; line-height: 1.5; color: var(--texto); }
+  .frase::after {
+    content: ""; position: absolute; top: -9px; right: 18px; width: 22px; height: 20px;
+    background: no-repeat center / contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23f0508a' d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E");
+  }
+
+  footer { margin-top: 70px; text-align: center; }
+  footer p { font-family: 'Caveat', cursive; font-size: 1.7rem; color: var(--framboesa); }
+  footer a {
+    display: inline-block; margin-top: 16px; padding: 10px 22px; border-radius: 999px;
+    color: var(--rosa); background: #fff; text-decoration: none; font-weight: 700;
+    box-shadow: inset 0 0 0 2px #ffb3cf;
+  }
+
+  #musica {
+    position: fixed; right: 16px; bottom: 16px; z-index: 10; width: 48px; height: 48px;
+    border: 0; border-radius: 50%; cursor: pointer; color: #fff; font-size: 1.3rem;
+    background: linear-gradient(135deg, var(--rosa), #ff7eb0); box-shadow: 0 8px 20px rgba(240,80,138,.4);
+  }
+  #musica.mudo { opacity: .6; }
+
+  .coracao { position: fixed; bottom: -40px; z-index: 2; pointer-events: none; animation: subir linear forwards; }
+  @keyframes subir { to { transform: translateY(-115vh) rotate(25deg); opacity: 0; } }
+
+  @media (min-width: 620px) {
+    .fotos { grid-template-columns: repeat(3, 1fr); }
+    .lista { grid-template-columns: 1fr 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) { .coracao { display: none; } html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+  <div class="estrelas" aria-hidden="true"></div>
+
+  <audio id="audio" loop preload="auto">
+    <source src="IWBY.mp3" type="audio/mpeg">
+  </audio>
+  <button id="musica" type="button" aria-label="Tocar ou pausar música">♪</button>
+
+  <main>
+    <header>
+      <h1>Momoh & Eu</h1>
+      <p class="sub">noisiss</p>
+    </header>
+
+    <section class="fotos" id="fotos"></section>
+
+    <h2>Jogos</h2>
+    <p class="legenda-secao"></p>
+    <section class="lista" id="jogos"></section>
+
+    <h2>Animes</h2>
+    <p class="legenda-secao"></p>
+    <section class="lista" id="animes"></section>
+
+    <footer>
+      <p>vou sempre te amar</p>
+      <a href="index.html">voltar</a>
+    </footer>
+  </main>
+
+  <script>
+    const fotos = [
+      ['foto1.png', ''],
+      ['foto2.png', ''],
+      ['foto3.png', ''],
+      ['foto4.png', ''],
+    ];
+
+    const jogos = [
+      ['Hollow Knight', 'Mesmo perdida em Hallownest, eu acharia o caminho até você.'],
+      ['Celeste', 'A montanha é difícil, mas do seu lado até o morango parece fácil de pegar.'],
+      ['God of War', 'Eu enfrentava até os deuses pra te proteger, mas prefiro um abraço.'],
+      ['Sonic', 'Corro na velocidade do som, mas sempre volto pra você.'],
+      ['Devil May Cry', 'Nosso amor é estilo SSS: nunca perde o combo.']
+    ];
+
+    const animes = [
+      ['Bleach', 'Minha alma é sua, até na Soul Society.'],
+      ['Soul Eater', 'Ressonância de almas perfeita: eu e você.'],
+      ['JoJo', 'Minha aventura mais bizarra é te amar, e eu adoro.'],
+      ['Bocchi the Rock!', 'Tímido ou não, meu coração faz solo de guitarra por você.'],
+    ];
+
+    const rot = i => ((i * 37) % 7 - 3) * 0.9;
+
+    document.getElementById('fotos').innerHTML = fotos.map(([src, leg], i) => `
+      <figure class="polaroid ${i === 2 ? 'selo-postal' : ''}" style="--r:${rot(i)}deg">
+        <div class="foto"><img data-base="${src.replace(/\.[^.]+$/, '')}" alt="${leg}" onerror="proxima(this)"></div>
+        <p>${leg}</p>
+      </figure>`).join('');
+
+    /* procura a foto em várias extensões/pastas */
+    const EXTS = ['jpg', 'jpeg', 'png', 'webp', 'JPG', 'JPEG', 'PNG'];
+    const PASTAS = ['', 'fotos/', 'imagens/'];
+    function proxima(img) {
+      const lista = [];
+      PASTAS.forEach(p => EXTS.forEach(e => lista.push(p + img.dataset.base + '.' + e)));
+      const i = +(img.dataset.i || 0);
+      if (i >= lista.length) { img.remove(); return; }
+      img.dataset.i = i + 1;
+      img.src = lista[i];
+    }
+    document.querySelectorAll('#fotos img').forEach(proxima);
+
+    const cards = (id, lista) => document.getElementById(id).innerHTML = lista.map(([t, f], i) =>
+      `<article class="frase" style="--r:${rot(i + 2) / 2}deg"><b>${t}</b><span>${f}</span></article>`).join('');
+    cards('jogos', jogos);
+    cards('animes', animes);
+
+    /* música: continua de onde parou na index.html */
+    const audio = document.getElementById('audio');
+    const botao = document.getElementById('musica');
+    let salvo = 0;
+    try { salvo = parseFloat(localStorage.getItem('musicaT')) || 0; } catch (e) {}
+
+    function atualizarBotao() { botao.classList.toggle('mudo', audio.paused); }
+    audio.addEventListener('play', atualizarBotao);
+    audio.addEventListener('pause', atualizarBotao);
+
+    function retomar() {
+      if (salvo && audio.duration) audio.currentTime = salvo % audio.duration;
+      audio.play().catch(() => {});
+    }
+    if (audio.readyState >= 1) retomar();
+    else audio.addEventListener('loadedmetadata', retomar, { once: true });
+
+    /* se o navegador bloquear o autoplay, toca no primeiro toque na tela */
+    document.addEventListener('pointerdown', () => {
+      if (audio.paused) audio.play().catch(() => {});
+    }, { once: true });
+
+    /* guarda o tempo atual */
+    setInterval(() => {
+      if (!audio.paused) { try { localStorage.setItem('musicaT', audio.currentTime); } catch (e) {} }
+    }, 500);
+
+    botao.addEventListener('click', e => {
+      e.stopPropagation();
+      audio.paused ? audio.play().catch(() => {}) : audio.pause();
+    });
+
+    /* corações subindo */
+    const SVG = 'http://www.w3.org/2000/svg';
+    const cores = ['#f0508a', '#ff7eb0', '#ffb3cf', '#ffffff'];
+    function criarCoracao() {
+      const c = document.createElement('div');
+      c.className = 'coracao';
+      const tam = Math.random() * 18 + 12;
+      const svg = document.createElementNS(SVG, 'svg');
+      svg.setAttribute('viewBox', '0 0 24 24'); svg.setAttribute('width', tam); svg.setAttribute('height', tam);
+      const p = document.createElementNS(SVG, 'path');
+      p.setAttribute('d', 'M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z');
+      p.setAttribute('fill', cores[Math.floor(Math.random() * cores.length)]);
+      svg.appendChild(p); c.appendChild(svg);
+      c.style.left = Math.random() * 100 + 'vw';
+      c.style.opacity = '.7';
+      const dur = Math.random() * 3 + 6;
+      c.style.animationDuration = dur + 's';
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), dur * 1000);
+    }
+    setInterval(criarCoracao, 1200);
+  </script>
+</body>
+</html>
